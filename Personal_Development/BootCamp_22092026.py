@@ -2,7 +2,7 @@
 import pandas as pd
 
 #   Ruta del Archivo de Excel
-path = "P:/Personal/BootCamp in Data Science/Python_Development/Material de Apoyo/Fundamentos/Datasets/Data_22092026.xlsx"
+path = "P:/Personal/BootCamp in Data Science/Python_Development/Personal_Development/Datasets/Data_22092026.xlsx"
 
 #   Cargando el DataFrame
 df = pd.read_excel(path)
@@ -12,7 +12,7 @@ df = pd.read_excel(path)
 print(df.info())    #   Información general del DataFrame
 
 #   Estadísticas descriptivas del DataFrame
-print(df.describe())    #   Estadísticas descriptivas del DataFrame
+print(df.describe(include = "all"))    #   Estadísticas descriptivas del DataFrame
 
 #   Verificacndo posibles valores de la variable "Industria"
 print(df['Industria'].value_counts())
@@ -28,4 +28,4 @@ for valores in df['Industria'].unique():
     #  Explorando el DataFrame segmentado
     print("\nInformación del DataFrame segmentado para la Industria: ", valores)
     print(df_segmentado.info())    #   Información general del DataFrame segmentado
-    print(df_segmentado.describe())    #   Estadísticas descriptivas del DataFrame segmentado
+    print(df_segmentado.describe(include = "all"))    #   Estadísticas descriptivas del DataFrame segmentado
