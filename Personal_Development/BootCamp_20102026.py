@@ -87,9 +87,17 @@ print("Conteo de NaN en Location: ", df["Location"].isnull().sum())             
 print(df["Transaction Date"].value_counts)                                      #   Veo solo fechas aparentemente...intentaré pasarlos a formato fecha:
 df["Transaction Date"] = pd.to_datetime(
     df["Transaction Date"], errors = "coerce")
-#   la función .astype() sirve para convertir la variable en un tipo de formato en específico, en este caso la convierto a int64 dado que Numpy debe trabajar con números
-df["Transaction Date"] = df["Transaction Date"].fillna(np.nanmedian(df["Transaction Date"].astype("int64")))
+#   la función .astype() sirve para convertir la variable en un tipo de formato en específico, en este caso la convierto a int64 dado que Numpy debe trabajar 
+#   con números. También es importante mencionar que aqui volví a usar la función de Pandas de to_timedate() dado que para sacar la mediana, debo sacarla sin
+#   tener en cuenta los valores NaT (Not a Time) y esta estaba como valor numérico por el tratamiendo realizado en la librería de Numpy de nanmedian():
+df["Transaction Date"] = df["Transaction Date"].fillna(
+    pd.to_datetime(np.nanmedian(df["Transaction Date"].astype("int64"))))
 print("Conteo de NaN en Transaction Date: ", df["Transaction Date"].isnull().sum())
 print(df.info())                                                                #   Revisamos que efectivamente quedó bien hecho y las variables quedaron bien
+print("Valores Nulos luego de los cambios: \n", df.isnull().sum())              #   Revisando Valores Nulos
+#   Ahora que la BBDD está limpia y correcta, podemos crear nuevas variables y operar:
+df["Revenue_Calculated"] = df["Quantity"] * df["Price Per Unit"]
 #   Guardando la data limpia en un nuevo archivo de Excel en este caso (index=False le indica a pandas que debe guardar el Excel sin incluir el índice del DataFrame. Si pusiera index=True, lo incluirá como una columna adicional a la izquierda de tus datos. Además, True es el valor predeterminado si no especifico ese parámetro):
 df.to_excel("P:/Personal/BootCamp in Data Science/Python_Development/Personal_Development/Datasets/df_limpio.xlsx", index = False)
+print("Se ha exportado la nueva BBDD limpia en Excel, con numbre 'df_limpio.xlsx' a la siguiente ruta:")
+print("P:/Personal/BootCamp in Data Science/Python_Development/Personal_Development/Datasets/df_limpio.xlsx")
