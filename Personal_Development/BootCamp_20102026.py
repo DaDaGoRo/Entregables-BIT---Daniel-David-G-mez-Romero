@@ -96,8 +96,21 @@ print("Conteo de NaN en Transaction Date: ", df["Transaction Date"].isnull().sum
 print(df.info())                                                                #   Revisamos que efectivamente quedó bien hecho y las variables quedaron bien
 print("Valores Nulos luego de los cambios: \n", df.isnull().sum())              #   Revisando Valores Nulos
 #   Ahora que la BBDD está limpia y correcta, podemos crear nuevas variables y operar:
-df["Revenue_Calculated"] = df["Quantity"] * df["Price Per Unit"]
+df["Revenue_Calculated"] = df["Quantity"] * df["Price Per Unit"]                #   Calculando ingresos
+df["Revenue_Level"] = np.where((df["Revenue_Calculated"] >= 15), "High", "Low") #   Creando etiquetas con la función np.where()
 #   Guardando la data limpia en un nuevo archivo de Excel en este caso (index=False le indica a pandas que debe guardar el Excel sin incluir el índice del DataFrame. Si pusiera index=True, lo incluirá como una columna adicional a la izquierda de tus datos. Además, True es el valor predeterminado si no especifico ese parámetro):
 df.to_excel("P:/Personal/BootCamp in Data Science/Python_Development/Personal_Development/Datasets/df_limpio.xlsx", index = False)
 print("Se ha exportado la nueva BBDD limpia en Excel, con numbre 'df_limpio.xlsx' a la siguiente ruta:")
 print("P:/Personal/BootCamp in Data Science/Python_Development/Personal_Development/Datasets/df_limpio.xlsx")
+
+#   Reto Final
+#   1. ¿Cúal es el producto con mayor cantidad vendida?
+print("Valores Únicos de Producto: \n", df["Item"].unique())
+#   Pongo sort = True para que los organice y ascending = False para que no sea ascendente sino descendente, es decir, que el más alto sea el primero en verse
+print("Ordenando los productos con mayor ocurrencia de venta: \n", df["Item"].value_counts(sort = True, ascending = False))
+print(df.groupby("Item")["Quantity"].sum())                     #   Con esta función veo la agrupación de las variables "Ttem" y la suma de la variable "Quantity"
+print("Producto con MAYOR número de ventas es: ", df.groupby("Item")["Quantity"].sum().idxmax(),    #   Con .idmax() -> Return the row label of the maximum value.
+      "\nY su número de ventas fue de: ", df.groupby("Item")["Quantity"].sum().max())               #   Con .max() -> Return the maximum of the values over the requested axis.
+#   2. ¿Qué producto genera mayor revenue?
+print("El producto que genera mayor Revenue es: ", df.groupby("Item")["Revenue_Calculated"].sum().idxmax(), 
+      "\n con un total en Revenue de: ", df.groupby("Item")["Revenue_Calculated"].sum().max())
