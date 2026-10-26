@@ -87,6 +87,7 @@ print("Conteo de NaN en Location: ", df["Location"].isnull().sum())             
 print(df["Transaction Date"].value_counts)                                      #   Veo solo fechas aparentemente...intentaré pasarlos a formato fecha:
 df["Transaction Date"] = pd.to_datetime(
     df["Transaction Date"], errors = "coerce")
+#   la función .astype() sirve para convertir la variable en un tipo de formato en específico, en este caso la convierto a int64 dado que Numpy debe trabajar con números
 df["Transaction Date"] = df["Transaction Date"].fillna(np.nanmedian(df["Transaction Date"].astype("int64")))
 print("Conteo de NaN en Transaction Date: ", df["Transaction Date"].isnull().sum())
 print(df.info())                                                                #   Revisamos que efectivamente quedó bien hecho y las variables quedaron bien
