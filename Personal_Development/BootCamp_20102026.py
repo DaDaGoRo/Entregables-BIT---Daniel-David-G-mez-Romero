@@ -87,7 +87,7 @@ print("Conteo de NaN en Location: ", df["Location"].isnull().sum())             
 print(df["Transaction Date"].value_counts)                                      #   Veo solo fechas aparentemente...intentaré pasarlos a formato fecha:
 df["Transaction Date"] = pd.to_datetime(
     df["Transaction Date"], errors = "coerce")
-df["Transaction Date"] = df["Transaction Date"].fillna(df["Transaction Date"].median())
+df["Transaction Date"] = df["Transaction Date"].fillna(np.nanmedian(df["Transaction Date"].astype("int64")))
 print("Conteo de NaN en Transaction Date: ", df["Transaction Date"].isnull().sum())
 print(df.info())                                                                #   Revisamos que efectivamente quedó bien hecho y las variables quedaron bien
 #   Guardando la data limpia en un nuevo archivo de Excel en este caso (index=False le indica a pandas que debe guardar el Excel sin incluir el índice del DataFrame. Si pusiera index=True, lo incluirá como una columna adicional a la izquierda de tus datos. Además, True es el valor predeterminado si no especifico ese parámetro):
